@@ -14,7 +14,7 @@ end
 
 -- Nagłówek
 print("▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄")
-print("▌             Nexus Universal Lua Loader            ▌")
+print("▌             doge Universal Lua Loader            ▌")
 print("▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀")
 print("Gracz: " .. LocalPlayer.Name)
 print("Gra: " .. gameName .. " (ID: " .. placeId .. ")")
@@ -23,6 +23,7 @@ print("Czas: " .. os.date("%H:%M:%S"))
 -- Lista skryptów powiązanych z grami
 local scripts = {
     [6941239719] = "https://pastebin.com/raw/aimbot123", -- Gunfight Arena
+    [125723653259639]Drill-Digging-Simulator
     [40338756] = "https://pastebin.com/raw/testbase",    -- Baseplate
 }
 
