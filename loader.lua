@@ -1,66 +1,83 @@
-
+-- 📦 Usługi Roblox
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local HttpService = game:GetService("HttpService")
-
+local MarketplaceService = game:GetService("MarketplaceService")
 local placeId = game.PlaceId
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(placeId).Name
 
--- Ładowanie "ekranowe"
+-- Pobierz nazwę gry
+local gameName
+pcall(function()
+    gameName = MarketplaceService:GetProductInfo(placeId).Name
+end)
+gameName = gameName or "Nieznana gra"
+
+-- ⏳ Konsolowe ładowanie
 for i = 1, 3 do
-    print("🔄 Ładowanie Nexus Loader" .. string.rep(".", i))
-    wait(0.5)
+    print("🔄 Ładowanie Doge Loader" .. string.rep(".", i))
+    task.wait(0.5)
 end
 
--- Nagłówek
+-- 🎯 Info w konsoli
 print("▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄")
-print("▌             doge Universal Lua Loader            ▌")
+print("▌           🐶 Doge Universal Lua Loader           ▌")
 print("▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀")
 print("Gracz: " .. LocalPlayer.Name)
 print("Gra: " .. gameName .. " (ID: " .. placeId .. ")")
 print("Czas: " .. os.date("%H:%M:%S"))
 
--- Lista skryptów powiązanych z grami
-local scripts = {
-    [6941239719] = "https://pastebin.com/raw/aimbot123", -- Gunfight Arena
-    [125723653259639]Drill-Digging-Simulator
-    [40338756] = "https://pastebin.com/raw/testbase",    -- Baseplate
+-- 🧠 Lista skryptów po nazwie gry
+local scriptsByName = {
+    ["Baseplate"] = "https://pastebin.com/raw/testbase",
+    ["Gunfight Arena"] = "https://pastebin.com/raw/aimbot123",
+    ["Some Other Game"] = "https://pastebin.com/raw/othergame123",
+    -- Dodaj więcej tu
 }
 
-local function createGUI()
-    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-    local Frame = Instance.new("Frame", ScreenGui)
-    local TextLabel = Instance.new("TextLabel", Frame)
+-- ✅ Ładowanie Rayfield GUI
+local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Rayfield/main/source"))()
 
-    ScreenGui.Name = "NexusLoaderGUI"
-    Frame.Size = UDim2.new(0, 400, 0, 100)
-    Frame.Position = UDim2.new(0.5, -200, 0.1, 0)
-    Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Frame.BorderSizePixel = 0
+-- 🌈 GUI Rayfield
+local Window = Rayfield:CreateWindow({
+    Name = "🐶 Doge Loader | " .. gameName,
+    LoadingTitle = "Doge Loader",
+    LoadingSubtitle = "Wczytywanie...",
+    ConfigurationSaving = { Enabled = false },
+    Discord = { Enabled = false },
+    KeySystem = false,
+})
 
-    TextLabel.Size = UDim2.new(1, 0, 1, 0)
-    TextLabel.Text = "🚀 Nexus Loader: " .. gameName
-    TextLabel.TextColor3 = Color3.new(1, 1, 1)
-    TextLabel.Font = Enum.Font.SourceSansBold
-    TextLabel.TextSize = 24
-    TextLabel.BackgroundTransparency = 1
-end
+-- 📁 Zakładka GUI
+local MainTab = Window:CreateTab("📂 Skrypt", 4483362458)
 
-createGUI()
+-- 🧨 Przycisk ładujący skrypt po nazwie gry
+MainTab:CreateButton({
+    Name = "🚀 Załaduj skrypt (wg nazwy gry)",
+    Callback = function()
+        if scriptsByName[gameName] then
+            local url = scriptsByName[gameName]
+            local success, err = pcall(function()
+                loadstring(game:HttpGet(url))()
+            end)
 
--- Wczytanie skryptu
-if scripts[placeId] then
-    print("🔍 Wczytywanie skryptu dla tej gry...")
-    local success, err = pcall(function()
-        loadstring(game:HttpGet(scripts[placeId]))()
-    end)
-
-    if success then
-        print("✅ Skrypt załadowany pomyślnie.")
-    else
-        warn("❌ Błąd ładowania skryptu: " .. tostring(err))
+            if success then
+                Rayfield:Notify({
+                    Title = "Doge Loader",
+                    Content = "✅ Skrypt załadowany!",
+                    Duration = 5,
+                })
+            else
+                Rayfield:Notify({
+                    Title = "Doge Loader",
+                    Content = "❌ Error Please Read List games That is supported " .. tostring(err),
+                    Duration = 5,
+                })
+            end
+        else
+            Rayfield:Notify({
+                Title = "Doge Loader",
+                Content = "⚠️ Brak skryptu dla gry: " .. gameName,
+                Duration = 5,
+            })
+        end
     end
-else
-    warn("⚠️ Nie znaleziono skryptu dla tej gry.")
-end
-
+})
